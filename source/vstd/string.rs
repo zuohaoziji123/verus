@@ -27,14 +27,16 @@ pub fn ex_str_slice_is_ascii(s: &str) -> (b: bool)
     s.is_ascii()
 }
 
-#[deprecated = "Use `&str` instead"]
+// #[deprecated(since = "1.76.0", note = "Use `&str` instead")]
+#[cfg_attr(not(verus_verify_core), deprecated = "use =~= or =~~= instead")]
 pub type StrSlice<'a> = &'a str;
 
 pub open spec fn new_strlit_spec(s: &str) -> &str {
     s
 }
 
-#[deprecated = "new_strlit is no longer necessary"]
+// #[deprecated(since = "1.76.0", note = "new_strlit is no longer necessary")]
+#[cfg_attr(not(verus_verify_core), deprecated = "use =~= or =~~= instead")]
 #[verifier::when_used_as_spec(new_strlit_spec)]
 pub fn new_strlit(s: &str) -> (t: &str)
     ensures
@@ -68,10 +70,12 @@ pub trait StrSliceExecFns {
     #[cfg(feature = "alloc")]
     fn as_bytes_vec(&self) -> alloc::vec::Vec<u8>;
 
-    #[deprecated = "from_rust_str is no longer necessary"]
+    // #[deprecated(since = "1.76.0", note = "from_rust_str is no longer necessary")]
+    #[cfg_attr(not(verus_verify_core), deprecated = "use =~= or =~~= instead")]
     fn from_rust_str<'a>(&'a self) -> &'a str;
 
-    #[deprecated = "into_rust_str is no longer necessary"]
+    // #[deprecated(since = "1.76.0", note = "into_rust_str is no longer necessary")]
+    #[cfg_attr(not(verus_verify_core), deprecated = "use =~= or =~~= instead")]
     fn into_rust_str<'a>(&'a self) -> &'a str;
 }
 
