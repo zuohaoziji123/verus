@@ -784,7 +784,11 @@ fn erase_spec_exps_typ<'tcx>(
             is_some = true;
         }
     }
-    if is_some || force_some { mk_exp(ExpX::Op(args, mk_typ(state))) } else { None }
+    if is_some || force_some {
+        mk_exp(ExpX::Op(args, mk_typ(state)))
+    } else {
+        None
+    }
 }
 
 // Return an Exp instead of an Option<Exp>
@@ -1339,7 +1343,11 @@ fn erase_expr<'tcx>(
             };
             let fn_def_id = if let ExprKind::Path(qpath) = &e0.kind {
                 let def = ctxt.types().qpath_res(&qpath, e0.hir_id);
-                if let Res::Def(_, fn_def_id) = def { Some(fn_def_id) } else { None }
+                if let Res::Def(_, fn_def_id) = def {
+                    Some(fn_def_id)
+                } else {
+                    None
+                }
             } else {
                 None
             };
@@ -1646,7 +1654,11 @@ fn erase_expr<'tcx>(
                 Some(GhostBlockAttr::Wrapper) => panic!(),
                 None => true,
             };
-            if keep { erase_block(ctxt, state, expect_spec, block) } else { None }
+            if keep {
+                erase_block(ctxt, state, expect_spec, block)
+            } else {
+                None
+            }
         }
         _ => {
             dbg!(&expr);
@@ -1669,7 +1681,11 @@ fn erase_block<'tcx>(
         stms.extend(erase_stmt(ctxt, state, stmt));
     }
     let e = block.expr.and_then(|e| erase_expr(ctxt, state, expect_spec, e));
-    if stms.len() > 0 || e.is_some() { mk_exp(ExpX::Block(stms, e)) } else { None }
+    if stms.len() > 0 || e.is_some() {
+        mk_exp(ExpX::Block(stms, e))
+    } else {
+        None
+    }
 }
 
 fn erase_stmt<'tcx>(ctxt: &Context<'tcx>, state: &mut State, stmt: &Stmt<'tcx>) -> Vec<Stm> {
@@ -2552,7 +2568,11 @@ fn erase_variant_data<'tcx>(
     };
     let revise_typ = |f_did: DefId, typ: Typ| {
         let mode = get_mode(Mode::Exec, get_attrs(f_did));
-        if mode == Mode::Spec { Box::new(TypX::Phantom(typ)) } else { typ }
+        if mode == Mode::Spec {
+            Box::new(TypX::Phantom(typ))
+        } else {
+            typ
+        }
     };
     match variant.ctor_kind() {
         Some(CtorKind::Fn) => {

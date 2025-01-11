@@ -333,7 +333,11 @@ where
         &mut self,
         p: rustc_middle::ty::Predicate<'tcx>,
     ) -> rustc_middle::ty::Predicate<'tcx> {
-        if p.has_vars_bound_at_or_above(self.current_index) { p.super_fold_with(self) } else { p }
+        if p.has_vars_bound_at_or_above(self.current_index) {
+            p.super_fold_with(self)
+        } else {
+            p
+        }
     }
 }
 

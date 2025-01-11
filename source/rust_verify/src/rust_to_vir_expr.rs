@@ -740,30 +740,27 @@ pub(crate) fn invariant_block_open<'a>(
                 Pat {
                     kind:
                         PatKind::Tuple(
-                            [
-                                Pat {
-                                    kind:
-                                        PatKind::Binding(
-                                            BindingMode(_, Mutability::Not),
-                                            guard_hir,
-                                            _,
-                                            None,
-                                        ),
-                                    default_binding_modes: true,
-                                    ..
-                                },
-                                inner_pat @ Pat {
-                                    kind:
-                                        PatKind::Binding(
-                                            BindingMode(_, Mutability::Mut),
-                                            inner_hir,
-                                            _,
-                                            None,
-                                        ),
-                                    default_binding_modes: true,
-                                    ..
-                                },
-                            ],
+                            [Pat {
+                                kind:
+                                    PatKind::Binding(
+                                        BindingMode(_, Mutability::Not),
+                                        guard_hir,
+                                        _,
+                                        None,
+                                    ),
+                                default_binding_modes: true,
+                                ..
+                            }, inner_pat @ Pat {
+                                kind:
+                                    PatKind::Binding(
+                                        BindingMode(_, Mutability::Mut),
+                                        inner_hir,
+                                        _,
+                                        None,
+                                    ),
+                                default_binding_modes: true,
+                                ..
+                            }],
                             dot_dot_pos,
                         ),
                     ..
@@ -822,24 +819,21 @@ pub(crate) fn invariant_block_close(close_stmt: &Stmt) -> Option<(HirId, HirId, 
                             )),
                         ..
                     },
-                    [
-                        Expr {
-                            kind:
-                                ExprKind::Path(QPath::Resolved(
-                                    None,
-                                    rustc_hir::Path { res: Res::Local(hir_id1), .. },
-                                )),
-                            ..
-                        },
-                        Expr {
-                            kind:
-                                ExprKind::Path(QPath::Resolved(
-                                    None,
-                                    rustc_hir::Path { res: Res::Local(hir_id2), .. },
-                                )),
-                            ..
-                        },
-                    ],
+                    [Expr {
+                        kind:
+                            ExprKind::Path(QPath::Resolved(
+                                None,
+                                rustc_hir::Path { res: Res::Local(hir_id1), .. },
+                            )),
+                        ..
+                    }, Expr {
+                        kind:
+                            ExprKind::Path(QPath::Resolved(
+                                None,
+                                rustc_hir::Path { res: Res::Local(hir_id2), .. },
+                            )),
+                        ..
+                    }],
                 ),
             ..
         }) => Some((*hir_id1, *hir_id2, *fun_id)),
@@ -2096,20 +2090,15 @@ pub(crate) fn expr_to_vir_innermost<'tcx>(
                     ExprKind::Block(
                         Block {
                             stmts:
-                                [
-                                    Stmt {
-                                        kind:
-                                            StmtKind::Expr(Expr {
-                                                kind:
-                                                    ExprKind::Break(
-                                                        Destination { label: None, .. },
-                                                        None,
-                                                    ),
-                                                ..
-                                            }),
-                                        ..
-                                    },
-                                ],
+                                [Stmt {
+                                    kind:
+                                        StmtKind::Expr(Expr {
+                                            kind:
+                                                ExprKind::Break(Destination { label: None, .. }, None),
+                                            ..
+                                        }),
+                                    ..
+                                }],
                             expr: None,
                             ..
                         },

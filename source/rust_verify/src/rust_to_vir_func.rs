@@ -1107,7 +1107,11 @@ pub(crate) fn check_item_fn<'tcx>(
         function
     };
     functions.push(function);
-    if is_verus_spec { Ok(None) } else { Ok(Some(name)) }
+    if is_verus_spec {
+        Ok(None)
+    } else {
+        Ok(Some(name))
+    }
 }
 
 fn has_self_parameter<'tcx>(ctxt: &Context<'tcx>, id: DefId) -> bool {

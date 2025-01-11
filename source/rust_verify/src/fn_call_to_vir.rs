@@ -719,10 +719,10 @@ fn verus_item_to_vir<'tcx, 'a>(
                 record_spec_fn_no_proof_args(bctx, expr);
                 assert!(args.len() == 2);
                 let arg = expr_to_vir(bctx, &args[0], ExprModifier::REGULAR)?;
-                let print_hint = matches!(
-                    &args[1],
-                    Expr { kind: ExprKind::Lit(Spanned { node: LitKind::Bool(true), .. }), .. }
-                );
+                let print_hint = matches!(&args[1], Expr {
+                    kind: ExprKind::Lit(Spanned { node: LitKind::Bool(true), .. }),
+                    ..
+                });
                 mk_expr(ExprX::Unary(UnaryOp::InferSpecForLoopIter { print_hint }, arg))
             }
             ExprItem::IsVariant => {
@@ -795,15 +795,11 @@ fn verus_item_to_vir<'tcx, 'a>(
         VerusItem::CompilableOpr(
             compilable_opr @ (CompilableOprItem::GhostExec | CompilableOprItem::TrackedExec),
         ) => {
-            record_compilable_operator(
-                bctx,
-                expr,
-                match compilable_opr {
-                    CompilableOprItem::GhostExec => CompilableOperator::GhostExec,
-                    CompilableOprItem::TrackedExec => CompilableOperator::TrackedExec,
-                    _ => unreachable!(),
-                },
-            );
+            record_compilable_operator(bctx, expr, match compilable_opr {
+                CompilableOprItem::GhostExec => CompilableOperator::GhostExec,
+                CompilableOprItem::TrackedExec => CompilableOperator::TrackedExec,
+                _ => unreachable!(),
+            });
 
             unsupported_err_unless!(args_len == 1, expr.span, "expected Ghost/Tracked", &args);
             let arg = &args[0];
@@ -1208,15 +1204,11 @@ fn verus_item_to_vir<'tcx, 'a>(
         VerusItem::CompilableOpr(
             opr @ (CompilableOprItem::TrackedGet | CompilableOprItem::TrackedBorrow),
         ) => {
-            record_compilable_operator(
-                bctx,
-                expr,
-                match opr {
-                    CompilableOprItem::TrackedGet => CompilableOperator::TrackedGet,
-                    CompilableOprItem::TrackedBorrow => CompilableOperator::TrackedBorrow,
-                    _ => unreachable!(),
-                },
-            );
+            record_compilable_operator(bctx, expr, match opr {
+                CompilableOprItem::TrackedGet => CompilableOperator::TrackedGet,
+                CompilableOprItem::TrackedBorrow => CompilableOperator::TrackedBorrow,
+                _ => unreachable!(),
+            });
 
             let vir_args = mk_vir_args(bctx, node_substs, f, &args)?;
             assert!(vir_args.len() == 1);

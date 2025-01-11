@@ -188,7 +188,11 @@ impl EmitState {
             }
             let (c, pos) = positions[i];
             let p = pos.0 as isize + column as isize - c as isize;
-            if p < 0 { None } else { Some(BytePos(p as u32)) }
+            if p < 0 {
+                None
+            } else {
+                Some(BytePos(p as u32))
+            }
         } else if found_line < line {
             // last pos on found_line is closest
             Some(positions.last().expect("found_line").1)

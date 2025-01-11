@@ -505,7 +505,11 @@ impl ExpandErrorsDriver {
             }
             j += 1;
         }
-        if all_ok { Style::SuccessGreen } else { Style::Normal }
+        if all_ok {
+            Style::SuccessGreen
+        } else {
+            Style::Normal
+        }
     }
 
     pub fn has_strange_result(&self) -> bool {
